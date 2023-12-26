@@ -1,0 +1,13 @@
+Error: ENOENT: no such file or directory, open 'C:\C-Dosyalar\Nodejs\4 - Webserver\views\404' - 00:43:47  22.12.2023
+ReferenceError: data is not defined - 00:46:06  22.12.2023
+ReferenceError: data is not defined - 00:46:07  22.12.2023
+ReferenceError: data is not defined - 00:46:15  22.12.2023
+ReferenceError: data is not defined - 00:46:16  22.12.2023
+ReferenceError: data is not defined - 00:46:18  22.12.2023
+ReferenceError: data is not defined - 00:46:19  22.12.2023
+ReferenceError: data is not defined - 00:46:20  22.12.2023
+ReferenceError: data is not defined - 00:46:20  22.12.2023
+TypeError: The "path" argument must be of type string or an instance of Buffer or URL. Received undefined - 00:59:14  22.12.2023
+ReferenceError: next is not defined - 21:41:24  25.12.2023
+Error: Not allowed by CORS - 11:50:42  26.12.2023
+Error: Not allowed by CORS - 11:50:42  26.12.2023
