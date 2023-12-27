@@ -4,38 +4,35 @@ const data = {
 }
 const fsPromises = require('fs').promises;
 const path = require('path');
-
-const clearCookie = (res) => {
-    // önbellekteki jwt anahtarını temizler. Ek ayarlar gereklidir.
-    res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: false });
-}
+const {clearJWTCookie} = require('../config/cookieOptions');
 
 const handleLogout = async (req, res) => {
     // On client, also delete the accessToken
-
-    
+     
     const cookies = req.cookies;
     if (!cookies?.jwt) return res.sendStatus(204); //No content
-    const refreshToken = cookies.jwt;
+    // const refreshToken = cookies.jwt;
+    clearJWTCookie(res);
+    res.sendStatus(200);   
 
-    // Is refreshToken in db?
-    const foundUser = data.users.find(person => person.refreshToken === refreshToken);
-    if (!foundUser) {
-        clearCookie(res);
-        return res.sendStatus(204);
-    }
+    // // Is refreshToken in db?
+    // const foundUser = data.users.find(person => person.refreshToken === refreshToken);
+    // if (!foundUser) {
+    //     clearJWTCookie(res)
+    //     return res.sendStatus(204);
+    // }
 
-    // Delete refreshToken in db
-    const otherUsers = data.users.filter(person => person.refreshToken !== foundUser.refreshToken);
-    const currentUser = { ...foundUser, refreshToken: '' };
-    data.setUsers([...otherUsers, currentUser]);
-    await fsPromises.writeFile(
-        path.join(__dirname, '..', 'models', 'users.json'),
-        JSON.stringify(data.users)
-    );
+    // // Delete refreshToken in db
+    // const otherUsers = data.users.filter(person => person.refreshToken !== foundUser.refreshToken);
+    // const currentUser = { ...foundUser, refreshToken: '' };
+    // data.setUsers([...otherUsers, currentUser]);
+    // await fsPromises.writeFile(
+    //     path.join(__dirname, '..', 'models', 'users.json'),
+    //     JSON.stringify(data.users)
+    // );
 
-    clearCookie(res);
-    res.sendStatus(204);
+    // clearJWTCookie(res)
+    // res.sendStatus(204);
 }
 
-module.exports = { handleLogout }
+module.exports = handleLogout;

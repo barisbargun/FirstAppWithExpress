@@ -1,5 +1,7 @@
 const { logEvents } = require("./logEvents")
 
+// gelen hataları ayrı yazdırmak için kullandığımız methoddur.
+// next kullanmamızın nedeni, req.send, req.sendStatus vb olayları kullanmadığımız için.
 const errorHandler = (err, req, res, next) => {
     logEvents(`${err.name}: ${err.message}`, "errLog.txt");
 

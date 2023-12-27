@@ -7,7 +7,6 @@ const corsOptions = {
         // bu yüzden !origin yaparak o web sitesinde görülmesini
         // sağlıyoruz. Geliştirme aşaması bitince !origini ve 
         // whiteList'teki istemediğimiz siteleri silmemiz gerek.
-        console.log(origin)
         if (allowedOrigins.indexOf(origin) !== -1 | !origin) {
             callback(null, true);
         } else {

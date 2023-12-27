@@ -1,12 +1,13 @@
 const jwt = require('jsonwebtoken');
 
-//dotenv, .env dosyasını okumamızı sağlar.
-require('dotenv').config();
+
 
 const verifyJWT = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    console.log("*" + authHeader); // Bearer token
-    if (!authHeader) return res.sendStatus(401);
+    // access tokeni alıp karşılaştırırız.
+    // thunderClient'de auth/bearer sekmesinden yaparız.
+    const authHeader = req.headers.authorization || req.header.Authorization;
+    // console.log("*" + authHeader); // Bearer token
+    if (!authHeader?.startsWith('Bearer ')) return res.sendStatus(401);
     
     const token = authHeader.split(' ')[1];
     jwt.verify(
@@ -14,7 +15,8 @@ const verifyJWT = (req, res, next) => {
         process.env.ACCESS_TOKEN_SECRET,
         (err, decoded) => {
             if (err) return res.sendStatus(403); //invalid token
-            req.user = decoded.username;
+            req.user = decoded.UserInfo.username;
+            req.roles = decoded.UserInfo.roles;
             next();
         }
     );

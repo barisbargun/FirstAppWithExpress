@@ -1,12 +1,1 @@
-[
-    {
-        "id":1,
-        "firstname":"barış",
-        "lastname":"olgun"
-    },
-    {
-        "id":2,
-        "firstname":"ali",
-        "lastname":"olgun"
-    }
-]
+[{"id":2,"firstname":"a1","lastname":"b2"},{"id":3,"firstname":"a1","lastname":"b2"},{"id":4,"firstname":"ab","lastname":"b2"},{"id":5,"firstname":"baro","lastname":"01"},{"id":6,"firstname":"baro","lastname":"01"},{"id":7,"firstname":"baro","lastname":"01"}]

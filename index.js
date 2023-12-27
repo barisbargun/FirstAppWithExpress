@@ -1,21 +1,33 @@
 // What is Middleware? It is those methods/functions/operations that are called BETWEEN processing the Request and sending the Response in your application method.
 
-const express = require("express");
+//dotenv, .env dosyasını okumamızı sağlar.
+require('dotenv').config();
+
+const express = require('express');
 const app = express();
-const cors = require("cors");
-const path = require("path");
-const { logWrite: log } = require("./middleware/logEvents");
-const errorHandler = require("./middleware/errorHandler");
-const corsOptions = require("./config/corsOptions");
+const cors = require('cors');
+const path = require('path');
+const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const { logWrite: log } = require('./middleware/logEvents');
+const errorHandler = require('./middleware/errorHandler');
+const corsOptions = require('./config/corsOptions');
 const credentials = require('./middleware/credentials');
 const verifyJWT = require('./middleware/verifyJWT');
+const dbConnect = require('./config/database/dbConnect')
 
 const PORT = process.env.PORT || 3500;
 
+// mongoose.set('useNewUrlParser', true);
+// mongoose.set('useUnifiedTopology',true);
+dbConnect();
 app.use(log);
+
+// credentials, cors(corsOptions)'dan önde gelmelidir.
 app.use(credentials);
 app.use(cors(corsOptions));
+
+// errorhandler cors'un arkasında expressin önünde olmalıdır.
 app.use(errorHandler);
 
 app.use(express.urlencoded({ extended: false }));
@@ -36,11 +48,6 @@ app.use("/auth", require("./routes/auth"));
 app.use("/register", require("./routes/register"));
 app.use('/refresh', require('./routes/refresh'));
 app.use('/logout', require('./routes/logout'));
-
-
-// app.get("/jsondata", (req, res) => {
-//     res.sendFile(path.join(__dirname, "data", "data.json"))
-// })
 
 app.get("/trying",(req, res) => {
     
@@ -98,6 +105,8 @@ app.all("*", (req, res) => {
 
 
 
+mongoose.connection.once('open', () => {
+    console.log("connected to mongoDB")
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+})
 
-
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
