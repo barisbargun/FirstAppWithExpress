@@ -1,25 +1,27 @@
-// What is Middleware? It is those methods/functions/operations that are called BETWEEN processing the Request and sending the Response in your application method.
-
 //dotenv, .env dosyasını okumamızı sağlar.
 require('dotenv').config();
 
+// npm i express
 const express = require('express');
 const app = express();
+
 const cors = require('cors');
-const path = require('path');
-const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
-const { logWrite: log } = require('./middleware/logEvents');
-const errorHandler = require('./middleware/errorHandler');
 const corsOptions = require('./config/corsOptions');
 const credentials = require('./middleware/credentials');
+
+const path = require('path');
+
+const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+
+const { logWrite: log } = require('./middleware/logEvents');
+const errorHandler = require('./middleware/errorHandler');
+
 const verifyJWT = require('./middleware/verifyJWT');
 const dbConnect = require('./config/database/dbConnect')
 
 const PORT = process.env.PORT || 3500;
 
-// mongoose.set('useNewUrlParser', true);
-// mongoose.set('useUnifiedTopology',true);
 dbConnect();
 app.use(log);
 
@@ -30,10 +32,12 @@ app.use(cors(corsOptions));
 // errorhandler cors'un arkasında expressin önünde olmalıdır.
 app.use(errorHandler);
 
+// When extended is set to false, the querystring library is used, and the values are not parsed in a nested way. For example, { extended: false } parses "key=value&key=value" into { key: 'value', key: 'value' }.
 app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
 
+// Tokenleri önbelleğe kaydetmek için gereklidir.
 app.use(cookieParser());
 
 
@@ -42,8 +46,8 @@ app.use("/subdir/", express.static(path.join(__dirname, "static")))
 app.use("/subdir/", require("./routes/subdir"))
 
 app.use("/", express.static(path.join(__dirname, "static")))
-
 app.use("/", require("./routes/root"))
+
 app.use("/auth", require("./routes/auth"));
 app.use("/register", require("./routes/register"));
 app.use('/refresh', require('./routes/refresh'));

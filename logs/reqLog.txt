@@ -542,3 +542,7 @@ DELETE undefined /employees - 13:36:32  27.12.2023
 DELETE undefined /employees - 13:36:34  27.12.2023
 DELETE undefined /employees - 13:36:38  27.12.2023
 GET undefined /employees - 13:36:41  27.12.2023
+GET undefined / - 13:58:56  27.12.2023
+GET undefined /css/style.css - 13:58:56  27.12.2023
+GET undefined /favicon.ico - 13:58:56  27.12.2023
+GET undefined /trying - 18:53:34  27.12.2023

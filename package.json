@@ -5,8 +5,7 @@
   "main": "l7.js",
   "scripts": {
     "start": "node index",
-    "dev": "nodemon index",
-    "build": "webpack"
+    "dev": "nodemon index"
   },
   "keywords": [],
   "author": "",

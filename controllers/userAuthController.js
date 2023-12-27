@@ -27,24 +27,19 @@ const handleUserAuth = async (req, res) => {
     // match true gelirse eşleşmiştir.
     const match = await bcrypt.compare(password, foundUser.password);
     if (match) {
-        // access_token ve refresh_token oluşturmak için her ikisinde de secret_tokenler kullanılır.
-        // secret_tokenlerin iyi saklanması gerekir. 
-
-        // Kullanıcı giriş yaptığında ekranda access token görünür 30 saniyesi vardır
-        // 30 saniye sonra iptal olur.
         const roles = Object.values(foundUser.roles);
         
         const accessToken = accessTokenSettings(foundUser.username, roles);
-        // kullanıcı giriş yaptığında 1 gün süren refresh token alır kullanıcının yanına ve cookies olarak eklenir.
+
         const refreshToken = refreshTokenSettings(foundUser.username);
-        // Refresh tokeni kullanıcıya eklemek için yaptığımız durum.
-        // const otherUsers = data.users.filter(person => person.username !== foundUser.username);
-        // const currentUser = { ...foundUser, refreshToken };
-        // data.setUsers([...otherUsers, currentUser]);
-        // await fsPromises.writeFile(
-        //     path.join(__dirname, '..', 'models', 'users.json'),
-        //     JSON.stringify(data.users)
-        // );
+
+        const otherUsers = data.users.filter(person => person.username !== foundUser.username);
+        const currentUser = { ...foundUser, refreshToken };
+        data.setUsers([...otherUsers, currentUser]);
+        await fsPromises.writeFile(
+            path.join(__dirname, '..', 'models', 'users.json'),
+            JSON.stringify(data.users)
+        );
 
         // const filter = {username:username};
 

@@ -24,5 +24,6 @@ const userSchema = new Schema({
     },
     refreshToken: String
 });
-
+// 'User' yazılsa dahi 'users' adı altında schema oluşturacaktır.
+// tanımlandığı anda yok ise boş bir database oluşturulacak.
 module.exports = mongoose.model('User', userSchema);

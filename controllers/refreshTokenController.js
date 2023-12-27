@@ -13,8 +13,10 @@ const handleRefreshToken = async (req, res) => {
     if (!cookies?.jwt) return res.sendStatus(401);
     const refreshToken = cookies.jwt;
 
-    // const foundUser = data.users.find(person => person.refreshToken === refreshToken);
     const foundUser = await User.findOne({refreshToken:refreshToken});
+
+    // const foundUser = data.users.find(person => person.refreshToken === refreshToken);
+    
     if (!foundUser) return res.sendStatus(403); //Forbidden 
     // refresh tokeni refresh token secret anahtarıyla karşılaştırır.
     // onaylanırsa yeni accesstoken oluşturur.

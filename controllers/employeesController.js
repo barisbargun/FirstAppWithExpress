@@ -91,7 +91,7 @@ const deleteEmployee = async (req, res) => {
 
     try {
         const employee = await Employee.findById(req.body.id).exec();
-        await employee.deleteOne().then(e => res.status(200).json({ 'message': 'Deleted.' })).catch(e => res.status(500).send(e));
+        await employee.deleteOne().then(e => res.status(200).json({ 'message': 'Deleted.' }))
     } catch (error) {
         res.status(400).json({ 'message': 'You must ented a valid employee ID' });
     }
@@ -112,18 +112,16 @@ const deleteEmployee = async (req, res) => {
 }
 
 const getEmployee = async (req, res) => {
+    if (!req?.params?.id) return res.status(400).json({ 'Message': 'You must enter a valid ID' });
     // const employee = db.employees.find(e => e.id == parseInt(req.params.id))
     // if (!employee) return res.status(400).json({ 'Message': 'ID is wrong' });
     // res.json(employee);
-    if (!req?.params?.id) return res.status(400).json({ 'Message': 'You must enter a valid ID' });
     try {
         const employee = await Employee.findById(req.params.id)
         res.json(employee);
     } catch {
         res.status(400).json({ 'Message': 'Employee not found with the provided ID' });
     }
-
-
 
 }
 
