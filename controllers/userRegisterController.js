@@ -34,12 +34,16 @@ const handleNewUser = async (req, res) => {
         //     path.join(__dirname, "..", "models", "users.json"),
         //     JSON.stringify(data.users)
         // );
-
-        const result = await User.create({
+        const data = email ? {
             username:username,
             password:hashedPsw,
             email:email
-        });
+        } : 
+        {
+            username:username,
+            password:hashedPsw
+        }
+        const result = await User.create(data);
 
         res.status(201).json({ "message": `New user ${username} created!` })
     } catch (err) {

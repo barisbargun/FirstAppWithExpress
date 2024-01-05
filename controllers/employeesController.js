@@ -15,10 +15,10 @@ const saveFile = async () => {
 const getAllEmployees = async (req, res) => {
     // res.json() ekrana json db.employees json tipinde yazdırır.
     // res.json(db.employees)
-
+    
     const employees = await Employee.find();
     if (!employees) return res.status(204).json({ 'message': 'No employees in data' });
-    res.json(employees);
+    res.status(200).json(employees);
 }
 
 const postEmployee = async (req, res) => {
@@ -63,7 +63,7 @@ const updateEmployee = async (req, res) => {
         if (req.body.lastname) employee.lastname = req.body.lastname;
 
         await employee.save();
-        res.status(200).json({ 'message': 'Updated user' });
+        res.status(201).json({ 'message': 'Updated user' });
     } catch (err) {
         res.status(500).json({"message":err.message});
     }

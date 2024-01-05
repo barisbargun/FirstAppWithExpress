@@ -5,10 +5,9 @@ const jwt = require('jsonwebtoken');
 const verifyJWT = (req, res, next) => {
     // access tokeni alıp karşılaştırırız.
     // thunderClient'de auth/bearer sekmesinden yaparız.
-    const authHeader = req.headers.authorization || req.header.Authorization;
-    // console.log("*" + authHeader); // Bearer token
-    if (!authHeader?.startsWith('Bearer ')) return res.sendStatus(401);
     
+    const authHeader = req.headers.authorization || req.header.Authorization;
+    if (!authHeader?.startsWith('Bearer ')) return res.sendStatus(401);
     const token = authHeader.split(' ')[1];
     jwt.verify(
         token,

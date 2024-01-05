@@ -6,10 +6,7 @@ const userSchema = new Schema({
         type:String,
         required: true
     },
-    email: {
-        type:String,
-        required: true
-    },
+    email: String,
     password: {
         type:String,
         required: true
@@ -22,7 +19,7 @@ const userSchema = new Schema({
         Editor:Number,
         Admin:Number
     },
-    refreshToken: String
+    refreshToken: [String]
 });
 // 'User' yazılsa dahi 'users' adı altında schema oluşturacaktır.
 // tanımlandığı anda yok ise boş bir database oluşturulacak.

@@ -11,3 +11,10 @@ TypeError: The "path" argument must be of type string or an instance of Buffer o
 ReferenceError: next is not defined - 21:41:24  25.12.2023
 Error: Not allowed by CORS - 11:50:42  26.12.2023
 Error: Not allowed by CORS - 11:50:42  26.12.2023
+Error: Not allowed by CORS - 15:18:19  28.12.2023
+Error: Not allowed by CORS - 15:18:52  28.12.2023
+Error: Not allowed by CORS - 15:18:54  28.12.2023
+Error: Not allowed by CORS - 15:19:37  28.12.2023
+Error: Not allowed by CORS - 15:19:37  28.12.2023
+Error: Not allowed by CORS - 15:42:51  28.12.2023
+Error: Not allowed by CORS - 15:42:51  28.12.2023

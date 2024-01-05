@@ -4,16 +4,35 @@ const data = {
 }
 const fsPromises = require('fs').promises;
 const path = require('path');
-const {clearJWTCookie} = require('../config/cookieOptions');
+const { clearJWTCookie } = require('../config/cookieOptions');
+const User = require("../models/User");
+const jwt = require('jsonwebtoken');
 
 const handleLogout = async (req, res) => {
     // On client, also delete the accessToken
-     
+
     const cookies = req.cookies;
     if (!cookies?.jwt) return res.sendStatus(204); //No content
 
+    const foundUser = await User.findOne({ refreshToken: cookies.jwt }).exec();
+
+    if (foundUser) {
+        const newRefreshTokenArray = (await Promise.all(
+            foundUser.refreshToken.map(async (token) => {
+                try {
+                    await jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+                    return token;
+                } catch (err) {
+                    return null;
+                }
+            })
+        )).filter(v => v !== null && v !== cookies.jwt);
+        foundUser.refreshToken = newRefreshTokenArray;
+        await foundUser.save();
+    }
+
     clearJWTCookie(res);
-    res.sendStatus(200);   
+    res.sendStatus(200);
 
     // const refreshToken = cookies.jwt;
 

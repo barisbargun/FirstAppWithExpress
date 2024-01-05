@@ -2,7 +2,7 @@
 // operasyonlarını yapmasını sağlar.
 
 const allowedOrigins = [
-    "https://www.google.com.tr", 
+    "http://localhost:5173", 
     'http://localhost:3500'
 ];
 
