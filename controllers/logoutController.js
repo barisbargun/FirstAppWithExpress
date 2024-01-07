@@ -9,30 +9,35 @@ const User = require("../models/User");
 const jwt = require('jsonwebtoken');
 
 const handleLogout = async (req, res) => {
-    // On client, also delete the accessToken
-
     const cookies = req.cookies;
     if (!cookies?.jwt) return res.sendStatus(204); //No content
 
+    // refresh tokenin kullanıcıda var olup olmadığına bakarız.
     const foundUser = await User.findOne({ refreshToken: cookies.jwt }).exec();
 
-    if (foundUser) {
-        const newRefreshTokenArray = (await Promise.all(
-            foundUser.refreshToken.map(async (token) => {
-                try {
-                    await jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
-                    return token;
-                } catch (err) {
-                    return null;
-                }
-            })
-        )).filter(v => v !== null && v !== cookies.jwt);
-        foundUser.refreshToken = newRefreshTokenArray;
-        await foundUser.save();
+    try {
+        // Eğer kullanıcıda varsa eski tokenlerini de kontrol edip tükenmişleri silerek
+        // database hafifletmiş oluruz.
+        if (foundUser) {
+            const newRefreshTokenArray = (await Promise.all(
+                foundUser.refreshToken.map(async (token) => {
+                    try {
+                        await jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+                        return token;
+                    } catch (err) {
+                        return null;
+                    }
+                })
+            )).filter(v => v !== null && v !== cookies.jwt);
+            foundUser.refreshToken = newRefreshTokenArray;
+            await foundUser.save();
+        }
+        clearJWTCookie(res);
+        res.sendStatus(200);
+    } catch (error) {
+        res.sendStatus(500);
     }
 
-    clearJWTCookie(res);
-    res.sendStatus(200);
 
     // const refreshToken = cookies.jwt;
 

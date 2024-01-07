@@ -1,8 +1,8 @@
 {
-  "name": "3---npm",
+  "name": "MongoDatabase",
   "version": "1.0.0",
   "description": "",
-  "main": "l7.js",
+  "main": "index.js",
   "scripts": {
     "start": "node index",
     "dev": "nodemon index"

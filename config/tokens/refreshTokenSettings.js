@@ -4,7 +4,7 @@ const refreshTokenSettings = (username) => {
     return jwt.sign(
         { "username": username },
         process.env.REFRESH_TOKEN_SECRET,
-        { expiresIn: '25m' } // 1 day
+        { expiresIn: '4h' } 
     )
 };
 

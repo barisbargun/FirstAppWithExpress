@@ -14,25 +14,27 @@ const { makeJWTCookie, clearJWTCookie } = require("../config/cookieOptions");
 
 const handleUserAuth = async (req, res) => {
     // giriş yapmak için username ve password bilgilerini gireriz.
-    const cookies = req.cookies;
     const { username, password } = req.body;
-    if (!username || !password) return res.status(400).json({ "message": "Username and password are required." })
-    
+    if (!username || !password) return res.status(400).json
+        ({ "message": "Username and password are required." })
+    const cookies = req.cookies;
+
     // databaseden kullanıcı bilgisini çekeriz.
     // const foundUser = data.users.find(u => u.username == username);
-    const foundUser = await User.findOne({username:username}).exec();
-   
+    const foundUser = await User.findOne({ username: username }).exec();
+
     if (!foundUser) return res.sendStatus(401) // Unauthorized;
 
     // girilen şifreyle kişinin encrypt edilmiş şifresini çözmeye çalışırız 
     // match true gelirse eşleşmiştir.
-    
-    const match = await bcrypt.compare(password, foundUser.password);
-    if (match) {
-        const roles = Object.values(foundUser.roles);
-        
-        const accessToken = accessTokenSettings(foundUser.username, roles);
 
+    const match = await bcrypt.compare(password, foundUser.password);
+
+    if (match) {
+        //{ User: 2001, Admin: 1907 } [ 2001, undefined, 1907 ] şekline çeviririz 
+        const roles = Object.values(foundUser.roles);
+
+        const accessToken = accessTokenSettings(foundUser.username, roles);
         const refreshToken = refreshTokenSettings(foundUser.username);
 
         // const otherUsers = data.users.filter(person => person.username !== foundUser.username);
@@ -43,10 +45,12 @@ const handleUserAuth = async (req, res) => {
         //     JSON.stringify(data.users)
         // );
 
-        if(cookies?.jwt) {
-            const user = await User.findOne({refreshToken}).exec();
+        // Eğer ki cookide jwt anahtarı varsa ve bir kullanıcıya 
+        // ait ise kullanıcıdan silip jwt anahtarını da sileriz.
+        if (cookies?.jwt) {
+            const user = await User.findOne({ refreshToken }).exec();
 
-            if(user) {
+            if (user) {
                 user.refreshToken = user.refreshToken.filter(v => v !== cookies.jwt);
                 await user.save();
             }
@@ -56,13 +60,13 @@ const handleUserAuth = async (req, res) => {
 
         foundUser.refreshToken = [...foundUser.refreshToken, refreshToken];
         await foundUser.save();
-        
+
         makeJWTCookie(res, refreshToken);
         res.json({ refreshToken, accessToken });
-        
+
     }
     else
-        res.status(401).json({message:"No match password"});
+        res.status(401).json({ message: "No match password" });
 }
 
 module.exports = handleUserAuth;
