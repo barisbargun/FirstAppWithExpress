@@ -8,7 +8,7 @@ const accessTokenSettings = (username, roles) => {
         }
     },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: '2m' }
+        { expiresIn: '1m' }
     )
 };
 

@@ -49,14 +49,6 @@ const handleRefreshToken = async (req, res) => {
 
                 const accessToken = accessTokenSettings(decoded.username, roles);
 
-                // Eğer kullanıcı 4 saat içinde hep giriş yapıyorsa sürekli yenileyerek ömür boyu giriş yapmasını sağlarız 4 saat boyunca girmesse de token yenileyemez.
-
-                const newRefreshToken = refreshTokenSettings(decoded.username);
-                makeJWTCookie(res, newRefreshToken);
-
-                foundUser.refreshToken = [...filteredArray, newRefreshToken];
-                await foundUser.save();
-
                 return res.status(200).json({ roles, accessToken });
 
             }
